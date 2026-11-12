@@ -1,1 +1,11 @@
-<Solution />
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="UP.Api/UP.Api.csproj" />
+    <Project Path="UP.Application/UP.Application.csproj" />
+    <Project Path="UP.Infrastructure/UP.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Tests/" />
+</Solution>

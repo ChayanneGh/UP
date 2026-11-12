@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace UP.Infrastructure.Entities;
+namespace P4rquing.Infraestructure.Models;
 
 public partial class Transaccione
 {

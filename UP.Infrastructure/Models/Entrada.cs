@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace UP.Infrastructure.Entities;
+namespace P4rquing.Infraestructure.Models;
 
 public partial class Entrada
 {
@@ -9,7 +9,7 @@ public partial class Entrada
 
     public DateTime? HoraEntrada { get; set; }
 
-    public int EstacionamientoId { get; set; }
+    public int EspacioId { get; set; }
 
     public int UsuarioId { get; set; }
 
@@ -17,7 +17,7 @@ public partial class Entrada
 
     public bool? Estado { get; set; }
 
-    public virtual Estacionamiento Estacionamiento { get; set; } = null!;
+    public virtual Estacionamiento Espacio { get; set; } = null!;
 
     public virtual Vehiculo PlacaNavigation { get; set; } = null!;
 

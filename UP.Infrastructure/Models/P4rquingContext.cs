@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace UP.Infrastructure.Entities;
+namespace P4rquing.Infraestructure.Models;
 
 public partial class P4rquingContext : DbContext
 {
@@ -37,14 +37,11 @@ public partial class P4rquingContext : DbContext
 
     public virtual DbSet<Vehiculo> Vehiculos { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=AzureConnection");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Entrada>(entity =>
         {
-            entity.HasKey(e => e.EntradaId).HasName("PK__Entradas__A0846674D59F1BDC");
+            entity.HasKey(e => e.EntradaId).HasName("PK__Entradas__A0846674BE5DFCBA");
 
             entity.Property(e => e.Estado).HasDefaultValue(true);
             entity.Property(e => e.HoraEntrada)
@@ -54,38 +51,38 @@ public partial class P4rquingContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Estacionamiento).WithMany(p => p.Entrada)
-                .HasForeignKey(d => d.EstacionamientoId)
+            entity.HasOne(d => d.Espacio).WithMany(p => p.Entrada)
+                .HasForeignKey(d => d.EspacioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Entradas__Espaci__787EE5A0");
+                .HasConstraintName("FK__Entradas__Espaci__52593CB8");
 
             entity.HasOne(d => d.PlacaNavigation).WithMany(p => p.Entrada)
                 .HasPrincipalKey(p => p.Placa)
                 .HasForeignKey(d => d.Placa)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Entradas__Placa__7A672E12");
+                .HasConstraintName("FK__Entradas__Placa__5441852A");
 
             entity.HasOne(d => d.Usuario).WithMany(p => p.Entrada)
                 .HasForeignKey(d => d.UsuarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Entradas__Usuari__797309D9");
+                .HasConstraintName("FK__Entradas__Usuari__534D60F1");
         });
 
         modelBuilder.Entity<Estacionamiento>(entity =>
         {
-            entity.HasKey(e => e.EstacionamientoId).HasName("PK__Estacion__83CC1191672499DB");
+            entity.HasKey(e => e.EstacionamientoId).HasName("PK__Estacion__83CC11918B5D37BE");
 
             entity.Property(e => e.Estado).HasDefaultValue(true);
 
             entity.HasOne(d => d.Nivel).WithMany(p => p.Estacionamientos)
                 .HasForeignKey(d => d.NivelId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Estaciona__Nivel__6FE99F9F");
+                .HasConstraintName("FK__Estaciona__Nivel__49C3F6B7");
         });
 
         modelBuilder.Entity<Nivele>(entity =>
         {
-            entity.HasKey(e => e.NivelId).HasName("PK__Niveles__316FA277526948CD");
+            entity.HasKey(e => e.NivelId).HasName("PK__Niveles__316FA27731977961");
 
             entity.Property(e => e.Capacidad).HasDefaultValue(5);
             entity.Property(e => e.Nombre)
@@ -95,22 +92,22 @@ public partial class P4rquingContext : DbContext
 
         modelBuilder.Entity<Reservacione>(entity =>
         {
-            entity.HasKey(e => e.ReservacionId).HasName("PK__Reservac__145B3ED5CBB4E4FF");
+            entity.HasKey(e => e.ReservacionId).HasName("PK__Reservac__145B3ED557E20E79");
 
-            entity.HasOne(d => d.Estacionamiento).WithMany(p => p.Reservaciones)
-                .HasForeignKey(d => d.EstacionamientoId)
+            entity.HasOne(d => d.Espacio).WithMany(p => p.Reservaciones)
+                .HasForeignKey(d => d.EspacioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Reservaci__Espac__72C60C4A");
+                .HasConstraintName("FK__Reservaci__Espac__4CA06362");
 
             entity.HasOne(d => d.Usuario).WithMany(p => p.Reservaciones)
                 .HasForeignKey(d => d.UsuarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Reservaci__Usuar__73BA3083");
+                .HasConstraintName("FK__Reservaci__Usuar__4D94879B");
         });
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.RolId).HasName("PK__Roles__F92302F1C8178567");
+            entity.HasKey(e => e.RolId).HasName("PK__Roles__F92302F183FF7DE5");
 
             entity.Property(e => e.Nombre)
                 .HasMaxLength(50)
@@ -119,7 +116,7 @@ public partial class P4rquingContext : DbContext
 
         modelBuilder.Entity<Salida>(entity =>
         {
-            entity.HasKey(e => e.SalidaId).HasName("PK__Salidas__DC997163D5802994");
+            entity.HasKey(e => e.SalidaId).HasName("PK__Salidas__DC9971637AC99003");
 
             entity.Property(e => e.HoraSalida)
                 .HasDefaultValueSql("(getdate())")
@@ -128,12 +125,12 @@ public partial class P4rquingContext : DbContext
             entity.HasOne(d => d.Entrada).WithMany(p => p.Salida)
                 .HasForeignKey(d => d.EntradaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Salidas__Entrada__7E37BEF6");
+                .HasConstraintName("FK__Salidas__Entrada__5812160E");
         });
 
         modelBuilder.Entity<Tarifa>(entity =>
         {
-            entity.HasKey(e => e.TarifaId).HasName("PK__Tarifas__E81AC2FB82AD6DF6");
+            entity.HasKey(e => e.TarifaId).HasName("PK__Tarifas__E81AC2FBE266060D");
 
             entity.Property(e => e.EsActiva).HasDefaultValue(true);
             entity.Property(e => e.TarifaDia).HasColumnType("money");
@@ -143,7 +140,7 @@ public partial class P4rquingContext : DbContext
 
         modelBuilder.Entity<TiposVehiculo>(entity =>
         {
-            entity.HasKey(e => e.TipoVehiculoId).HasName("PK__TiposVeh__1EA21D0D9441A659");
+            entity.HasKey(e => e.TipoVehiculoId).HasName("PK__TiposVeh__1EA21D0DD0FE3AA1");
 
             entity.Property(e => e.Nombre)
                 .HasMaxLength(50)
@@ -152,7 +149,7 @@ public partial class P4rquingContext : DbContext
 
         modelBuilder.Entity<Transaccione>(entity =>
         {
-            entity.HasKey(e => e.TransaccionId).HasName("PK__Transacc__86A849FE4D17918F");
+            entity.HasKey(e => e.TransaccionId).HasName("PK__Transacc__86A849FEE1C1AB74");
 
             entity.Property(e => e.Fecha)
                 .HasDefaultValueSql("(getdate())")
@@ -162,31 +159,31 @@ public partial class P4rquingContext : DbContext
             entity.HasOne(d => d.Entrada).WithMany(p => p.Transacciones)
                 .HasForeignKey(d => d.EntradaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Transacci__Entra__05D8E0BE");
+                .HasConstraintName("FK__Transacci__Entra__5FB337D6");
 
             entity.HasOne(d => d.Salida).WithMany(p => p.Transacciones)
                 .HasForeignKey(d => d.SalidaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Transacci__Salid__06CD04F7");
+                .HasConstraintName("FK__Transacci__Salid__60A75C0F");
 
             entity.HasOne(d => d.Tarifa).WithMany(p => p.Transacciones)
                 .HasForeignKey(d => d.TarifaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Transacci__Tarif__04E4BC85");
+                .HasConstraintName("FK__Transacci__Tarif__5EBF139D");
 
             entity.HasOne(d => d.Usuario).WithMany(p => p.Transacciones)
                 .HasForeignKey(d => d.UsuarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Transacci__Usuar__07C12930");
+                .HasConstraintName("FK__Transacci__Usuar__619B8048");
         });
 
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity.HasKey(e => e.UsuarioId).HasName("PK__Usuarios__2B3DE7B8BA4F3BA7");
+            entity.HasKey(e => e.UsuarioId).HasName("PK__Usuarios__2B3DE7B857E749AF");
 
-            entity.HasIndex(e => e.Correo, "UQ__Usuarios__60695A19DAD1250F").IsUnique();
+            entity.HasIndex(e => e.Correo, "UQ__Usuarios__60695A197A537774").IsUnique();
 
-            entity.HasIndex(e => e.Rne, "UQ__Usuarios__CAF07DAE76AFD521").IsUnique();
+            entity.HasIndex(e => e.Rne, "UQ__Usuarios__CAF07DAE309E7D52").IsUnique();
 
             entity.Property(e => e.Contrasena)
                 .HasMaxLength(255)
@@ -208,14 +205,14 @@ public partial class P4rquingContext : DbContext
 
             entity.HasOne(d => d.Rol).WithMany(p => p.Usuarios)
                 .HasForeignKey(d => d.RolId)
-                .HasConstraintName("FK__Usuarios__RolId__628FA481");
+                .HasConstraintName("FK__Usuarios__RolId__3C69FB99");
         });
 
         modelBuilder.Entity<Vehiculo>(entity =>
         {
-            entity.HasKey(e => e.VehiculoId).HasName("PK__Vehiculo__AA0886001BDAAF3C");
+            entity.HasKey(e => e.VehiculoId).HasName("PK__Vehiculo__AA0886008E292917");
 
-            entity.HasIndex(e => e.Placa, "UQ__Vehiculo__8310F99D7303E613").IsUnique();
+            entity.HasIndex(e => e.Placa, "UQ__Vehiculo__8310F99D92B99EF6").IsUnique();
 
             entity.Property(e => e.Placa)
                 .HasMaxLength(10)
@@ -224,12 +221,12 @@ public partial class P4rquingContext : DbContext
             entity.HasOne(d => d.Propietario).WithMany(p => p.Vehiculos)
                 .HasForeignKey(d => d.PropietarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Vehiculos__Propi__68487DD7");
+                .HasConstraintName("FK__Vehiculos__Propi__4222D4EF");
 
             entity.HasOne(d => d.TipoVehiculo).WithMany(p => p.Vehiculos)
                 .HasForeignKey(d => d.TipoVehiculoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Vehiculos__TipoV__693CA210");
+                .HasConstraintName("FK__Vehiculos__TipoV__4316F928");
         });
 
         OnModelCreatingPartial(modelBuilder);

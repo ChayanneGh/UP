@@ -1,41 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using P4rquing.Infraestructure.Models;
+using UP.Infrastructure.Models;
 
-namespace P4rquing.Infraestructure.Context;
+namespace UP.Infrastructure.Context;
 
 public partial class P4rquingContext : DbContext
 {
     public P4rquingContext()
     {
-        Entradas = null!;
-        Estacionamientos = null!;
-        Niveles = null!;
-        Reservaciones = null!;
-        Roles = null!;
-        Salidas = null!;
-        Tarifas = null!;
-        TiposVehiculos = null!;
-        Transacciones = null!;
-        Usuarios = null!;
-        Vehiculos = null!;
     }
 
     public P4rquingContext(DbContextOptions<P4rquingContext> options)
         : base(options)
     {
-        Entradas = null!;
-        Estacionamientos = null!;
-        Niveles = null!;
-        Reservaciones = null!;
-        Roles = null!;
-        Salidas = null!;
-        Tarifas = null!;
-        TiposVehiculos = null!;
-        Transacciones = null!;
-        Usuarios = null!;
-        Vehiculos = null!;
     }
 
     public virtual DbSet<Entrada> Entradas { get; set; }
@@ -60,6 +38,9 @@ public partial class P4rquingContext : DbContext
 
     public virtual DbSet<Vehiculo> Vehiculos { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=P4rquing;Integrated Security=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

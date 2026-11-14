@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace P4rquing.Infraestructure.Models;
+namespace UP.Infrastructure.Models;
 
 public partial class TiposVehiculo
 {

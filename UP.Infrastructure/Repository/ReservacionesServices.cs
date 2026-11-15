@@ -5,7 +5,7 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using UP.Infrastructure.Models;
 
-namespace UP.Infrastructure.Services;
+namespace UP.Infrastructure.Repository;
 
 internal class ReservacionesServices
 {

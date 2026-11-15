@@ -4,8 +4,9 @@ using System.Text;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using UP.Infrastructure.Models;
+using UP.Infrastructure.Interface;
 
-namespace UP.Infrastructure.Services;
+namespace UP.Infrastructure.Repository;
  public class NivelServices
 {
     private readonly string _connectionString;
@@ -15,21 +16,22 @@ namespace UP.Infrastructure.Services;
         _connectionString = connectionStrings;
     }
 
-    public async Task<IEnumerable<Nivel>> GetNivelesAsync()
+ 
+    public async Task<IEnumerable<Nivele>> GetListAsync()
     {
         using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync();
         var query = "SELECT * FROM Niveles";
-        var niveles = await connection.QueryAsync<Nivel>(query);
+        var niveles = await connection.QueryAsync<Nivele>(query);
         return niveles;
     }
 
-    public async Task<Nivel> GetNivelByIdAsync(int id)
+    public async Task<Nivele?> GetIdAsync(int id)
     {
         using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync();
         var query = "SELECT * FROM Niveles WHERE Id = @Id";
-        var nivel = await connection.QuerySingleOrDefaultAsync<Nivel>(query, new { Id = id });
+        var nivel = await connection.QuerySingleOrDefaultAsync<Nivele>(query, new { Id = id });
         return nivel;
     }
 

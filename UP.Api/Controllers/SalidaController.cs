@@ -7,12 +7,12 @@ namespace UP.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class SalidaController(EntradaSrv entradaSrv) : ControllerBase
+public class SalidaController(SalidaSrv salidaSrv) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] Entrada entrada)
+    public async Task<IActionResult> Post([FromBody] Salida salida)
     {
-        if (!await entradaSrv.Create(entrada)) return NotFound();
+        if (!await salidaSrv.Create(salida)) return NotFound();
 
         return Ok();
     }
@@ -20,35 +20,35 @@ public class SalidaController(EntradaSrv entradaSrv) : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var Lista = await entradaSrv.Read();
+        var Lista = await salidaSrv.Read();
 
         if (Lista is null) return NotFound();
 
         return Ok(Lista);
     }
 
-    [HttpGet("{EntradaId}")]
-    public async Task<IActionResult> GetById(int EntradaId)
+    [HttpGet("{SalidaId}")]
+    public async Task<IActionResult> GetById(int SalidaId)
     {
-        var entrada = await entradaSrv.ReadOne(EntradaId);
+        var salida = await salidaSrv.ReadOne(SalidaId);
 
-        if (entrada is null) return NotFound();
+        if (salida is null) return NotFound();
 
-        return Ok(entrada);
+        return Ok(salida);
     }
 
-    [HttpDelete("{EntradaId}")]
-    public async Task<IActionResult> Delete(int EntradaId)
+    [HttpDelete("{SalidaId}")]
+    public async Task<IActionResult> Delete(int SalidaId)
     {
-        if (!await entradaSrv.Delete(EntradaId)) return NotFound();
+        if (!await salidaSrv.Delete(SalidaId)) return NotFound();
 
         return Ok();
     }
 
-    [HttpPut("{EntradaId}")]
-    public async Task<IActionResult> Put(int EntradaId, [FromBody] Entrada entrada)
+    [HttpPut("{SalidaId}")]
+    public async Task<IActionResult> Put(int SalidaId, [FromBody] Salida salida)
     {
-        if (!await entradaSrv.Update(EntradaId, entrada)) return NotFound();
+        if (!await salidaSrv.Update(SalidaId, salida)) return NotFound();
 
         return Ok();
     }

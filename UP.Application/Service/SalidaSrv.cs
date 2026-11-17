@@ -29,8 +29,9 @@ public class SalidaSrv(IDbContextFactory<P4rquingContext> contextFactory)
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.SalidaId == Id);
     }
-    public async Task<bool> Update(Salida salida)
+    public async Task<bool> Update(int Id, Salida salida)
     {
+        if (Id != salida.SalidaId) return false;
         await using var contexto = await contextFactory.CreateDbContextAsync();
 
         contexto.Salidas.Update(salida);

@@ -1,0 +1,10 @@
+[
+  {
+    "projectKey": "UP_api",
+    "projectName": "UP API"
+  },
+  {
+    "projectKey": "UP_web",
+    "projectName": "UP Blazor Web"
+  }
+]

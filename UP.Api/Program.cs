@@ -1,4 +1,5 @@
-using UP.Infrastructure.Services;
+using UP.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +11,7 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-buider.Services.AddDbContext<UPContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<UPContext>(options =>options.UseSqlServer(connectionString));
 
 
 

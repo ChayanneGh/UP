@@ -1,4 +1,4 @@
-﻿namespace UP.Infrastructure.Interface;
+﻿namespace UP.Application.Interface;
  
 public interface IGenericRepository<T> where T : class
 {

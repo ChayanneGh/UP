@@ -4,7 +4,6 @@ namespace UP.Application.DTOs;
 
 public class TransaccionDto
 {
-    public int TransaccionId { get; set; }
     public int TarifaId { get; set; }
     public int EntradaId { get; set; }
     public int SalidaId { get; set; }

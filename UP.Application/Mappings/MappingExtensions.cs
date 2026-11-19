@@ -1,5 +1,5 @@
 using UP.Application.DTOs;
-using UP.Infrastructure.Models;
+using UP.Infrastructure.Entities;
 
 namespace UP.Infrastructure.Mappings;
 

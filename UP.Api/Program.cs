@@ -1,5 +1,6 @@
-using UP.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using UP.Application.Services;
+using UP.Infrastructure.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +12,20 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddDbContext<UPContext>(options =>options.UseSqlServer(connectionString));
+builder.Services.AddDbContextFactory<UPContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection")));
 
+builder.Services.AddScoped<EntradaSrv>();
+builder.Services.AddScoped<SalidaSrv>();
+builder.Services.AddScoped<EstacionamientoSrv>();
+builder.Services.AddScoped<NiveleSrv>();
+builder.Services.AddScoped<ReservacioneSrv>();
+builder.Services.AddScoped<RoleSrv>();
+builder.Services.AddScoped<TarifaSrv>();
+builder.Services.AddScoped<TiposVehiculoSrv>();
+builder.Services.AddScoped<TransaccioneSrv>();
+builder.Services.AddScoped<UsuarioSrv>();
+builder.Services.AddScoped<VehiculoSrv>();
 
 
 var app = builder.Build();

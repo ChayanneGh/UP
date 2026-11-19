@@ -16,4 +16,8 @@
     <PackageReference Include="Microsoft.Data.SqlClient" Version="8.0.0-preview1.26313.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UP.Infrastructure\UP.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

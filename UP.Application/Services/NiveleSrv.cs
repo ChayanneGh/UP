@@ -1,11 +1,33 @@
 using Microsoft.EntityFrameworkCore;
+using UP.Application.Interface;
 using UP.Infrastructure.Context;
 using UP.Infrastructure.Entities;
 
-namespace UP.Application.Service;
+namespace UP.Application.Services;
 
-public class NiveleSrv(IDbContextFactory<P4rquingContext> contextFactory)
+public class NiveleSrv(IDbContextFactory<UPContext> contextFactory) : IGenericRepository<Nivele>
 {
+    public async Task<Nivele?> GetIdAsync(int id) => await ReadOne(id);
+
+    public async Task<IEnumerable<Nivele>> GetListAsync() => await Read();
+
+    public async Task<int> CreateAsync(Nivele entity)
+    {
+        await using var contexto = await contextFactory.CreateDbContextAsync();
+        contexto.Niveles.Add(entity);
+        await contexto.SaveChangesAsync();
+        return entity.NivelId;
+    }
+
+    public async Task UpdateAsync(Nivele entity)
+    {
+        await using var contexto = await contextFactory.CreateDbContextAsync();
+        contexto.Niveles.Update(entity);
+        await contexto.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(int id) => await Delete(id);
+
     public async Task<bool> Create(Nivele nivel)
     {
         await using var contexto = await contextFactory.CreateDbContextAsync();

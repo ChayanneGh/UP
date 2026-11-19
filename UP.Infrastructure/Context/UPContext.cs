@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using UP.Infrastructure.Models;
+using UP.Infrastructure.Entities;
 
 namespace UP.Infrastructure.Context;
 
@@ -53,8 +53,8 @@ public partial class UPContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Espacio).WithMany(p => p.Entrada)
-                .HasForeignKey(d => d.EspacioId)
+            entity.HasOne(d => d.Estacionamiento).WithMany(p => p.Entrada)
+                .HasForeignKey(d => d.EstacionamientoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Entradas__Espaci__52593CB8");
 
@@ -96,8 +96,8 @@ public partial class UPContext : DbContext
         {
             entity.HasKey(e => e.ReservacionId).HasName("PK__Reservac__145B3ED557E20E79");
 
-            entity.HasOne(d => d.Espacio).WithMany(p => p.Reservaciones)
-                .HasForeignKey(d => d.EspacioId)
+            entity.HasOne(d => d.Estacionamiento).WithMany(p => p.Reservaciones)
+                .HasForeignKey(d => d.EstacionamientoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Reservaci__Espac__4CA06362");
 

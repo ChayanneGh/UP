@@ -1,11 +1,33 @@
 using Microsoft.EntityFrameworkCore;
+using UP.Application.Interface;
 using UP.Infrastructure.Context;
 using UP.Infrastructure.Entities;
 
-namespace UP.Application.Service;
+namespace UP.Application.Services;
 
-public class EstacionamientoSrv(IDbContextFactory<P4rquingContext> contextFactory)
+public class EstacionamientoSrv(IDbContextFactory<UPContext> contextFactory) : IGenericRepository<Estacionamiento>
 {
+    public async Task<Estacionamiento?> GetIdAsync(int id) => await ReadOne(id);
+
+    public async Task<IEnumerable<Estacionamiento>> GetListAsync() => await Read();
+
+    public async Task<int> CreateAsync(Estacionamiento entity)
+    {
+        await using var contexto = await contextFactory.CreateDbContextAsync();
+        contexto.Estacionamientos.Add(entity);
+        await contexto.SaveChangesAsync();
+        return entity.EstacionamientoId;
+    }
+
+    public async Task UpdateAsync(Estacionamiento entity)
+    {
+        await using var contexto = await contextFactory.CreateDbContextAsync();
+        contexto.Estacionamientos.Update(entity);
+        await contexto.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(int id) => await Delete(id);
+
     public async Task<bool> Create(Estacionamiento estacionamiento)
     {
         await using var contexto = await contextFactory.CreateDbContextAsync();

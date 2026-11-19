@@ -1,11 +1,33 @@
 using Microsoft.EntityFrameworkCore;
+using UP.Application.Interface;
 using UP.Infrastructure.Context;
 using UP.Infrastructure.Entities;
 
-namespace UP.Application.Service;
+namespace UP.Application.Services;
 
-public class UsuarioSrv(IDbContextFactory<P4rquingContext> contextFactory)
+public class UsuarioSrv(IDbContextFactory<UPContext> contextFactory) : IGenericRepository<Usuario>
 {
+    public async Task<Usuario?> GetIdAsync(int id) => await ReadOne(id);
+
+    public async Task<IEnumerable<Usuario>> GetListAsync() => await Read();
+
+    public async Task<int> CreateAsync(Usuario entity)
+    {
+        await using var contexto = await contextFactory.CreateDbContextAsync();
+        contexto.Usuarios.Add(entity);
+        await contexto.SaveChangesAsync();
+        return entity.UsuarioId;
+    }
+
+    public async Task UpdateAsync(Usuario entity)
+    {
+        await using var contexto = await contextFactory.CreateDbContextAsync();
+        contexto.Usuarios.Update(entity);
+        await contexto.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(int id) => await Delete(id);
+
     public async Task<bool> Create(Usuario usuario)
     {
         await using var contexto = await contextFactory.CreateDbContextAsync();

@@ -1,11 +1,33 @@
 using Microsoft.EntityFrameworkCore;
+using UP.Application.Interface;
 using UP.Infrastructure.Context;
 using UP.Infrastructure.Entities;
 
-namespace UP.Application.Service;
+namespace UP.Application.Services;
 
-public class RoleSrv(IDbContextFactory<P4rquingContext> contextFactory)
+public class RoleSrv(IDbContextFactory<UPContext> contextFactory) : IGenericRepository<Role>
 {
+    public async Task<Role?> GetIdAsync(int id) => await ReadOne(id);
+
+    public async Task<IEnumerable<Role>> GetListAsync() => await Read();
+
+    public async Task<int> CreateAsync(Role entity)
+    {
+        await using var contexto = await contextFactory.CreateDbContextAsync();
+        contexto.Roles.Add(entity);
+        await contexto.SaveChangesAsync();
+        return entity.RolId;
+    }
+
+    public async Task UpdateAsync(Role entity)
+    {
+        await using var contexto = await contextFactory.CreateDbContextAsync();
+        contexto.Roles.Update(entity);
+        await contexto.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(int id) => await Delete(id);
+
     public async Task<bool> Create(Role role)
     {
         await using var contexto = await contextFactory.CreateDbContextAsync();

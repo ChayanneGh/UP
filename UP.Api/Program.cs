@@ -10,7 +10,8 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddSingleton<IDbConnectionFactory>(_ => new SqlConnectionFactory(connectionString!));
+buider.Services.AddDbContext<UPContext>(options =>
+    options.UseSqlServer(connectionString));
 
 
 

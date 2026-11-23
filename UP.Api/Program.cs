@@ -52,6 +52,8 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
+app.UseCors("PermitirTodo");
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

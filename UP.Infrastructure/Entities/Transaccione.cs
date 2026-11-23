@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace UP.Infrastructure.Entities;
@@ -19,11 +19,11 @@ public partial class Transaccione
 
     public DateTime? Fecha { get; set; }
 
-    public virtual Entrada Entrada { get; set; } = null!;
+    [System.Text.Json.Serialization.JsonIgnore] public virtual Entrada Entrada { get; set; } = null!;
 
-    public virtual Salida Salida { get; set; } = null!;
+    [System.Text.Json.Serialization.JsonIgnore] public virtual Salida Salida { get; set; } = null!;
 
-    public virtual Tarifa Tarifa { get; set; } = null!;
+    [System.Text.Json.Serialization.JsonIgnore] public virtual Tarifa Tarifa { get; set; } = null!;
 
-    public virtual Usuario Usuario { get; set; } = null!;
+    [System.Text.Json.Serialization.JsonIgnore] public virtual Usuario Usuario { get; set; } = null!;
 }

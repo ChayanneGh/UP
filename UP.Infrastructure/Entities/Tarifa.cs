@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace UP.Infrastructure.Entities;
@@ -15,5 +15,5 @@ public partial class Tarifa
 
     public bool? EsActiva { get; set; }
 
-    public virtual ICollection<Transaccione> Transacciones { get; set; } = new List<Transaccione>();
+    [System.Text.Json.Serialization.JsonIgnore] public virtual ICollection<Transaccione> Transacciones { get; set; } = new List<Transaccione>();
 }

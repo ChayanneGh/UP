@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace UP.Infrastructure.Entities;
@@ -11,5 +11,5 @@ public partial class Nivele
 
     public string? Nombre { get; set; }
 
-    public virtual ICollection<Estacionamiento> Estacionamientos { get; set; } = new List<Estacionamiento>();
+    [System.Text.Json.Serialization.JsonIgnore] public virtual ICollection<Estacionamiento> Estacionamientos { get; set; } = new List<Estacionamiento>();
 }

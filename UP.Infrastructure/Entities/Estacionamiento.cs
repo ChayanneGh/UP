@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace UP.Infrastructure.Entities;
@@ -11,9 +11,9 @@ public partial class Estacionamiento
 
     public bool? Estado { get; set; }
 
-    public virtual ICollection<Entrada> Entrada { get; set; } = new List<Entrada>();
+    [System.Text.Json.Serialization.JsonIgnore] public virtual ICollection<Entrada> Entrada { get; set; } = new List<Entrada>();
 
-    public virtual Nivele Nivel { get; set; } = null!;
+    [System.Text.Json.Serialization.JsonIgnore] public virtual Nivele Nivel { get; set; } = null!;
 
-    public virtual ICollection<Reservacione> Reservaciones { get; set; } = new List<Reservacione>();
+    [System.Text.Json.Serialization.JsonIgnore] public virtual ICollection<Reservacione> Reservaciones { get; set; } = new List<Reservacione>();
 }

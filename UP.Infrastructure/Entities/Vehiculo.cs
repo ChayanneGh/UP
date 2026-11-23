@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace UP.Infrastructure.Entities;
@@ -13,9 +13,9 @@ public partial class Vehiculo
 
     public int TipoVehiculoId { get; set; }
 
-    public virtual ICollection<Entrada> Entrada { get; set; } = new List<Entrada>();
+    [System.Text.Json.Serialization.JsonIgnore] public virtual ICollection<Entrada> Entrada { get; set; } = new List<Entrada>();
 
-    public virtual Usuario Propietario { get; set; } = null!;
+    [System.Text.Json.Serialization.JsonIgnore] public virtual Usuario Propietario { get; set; } = null!;
 
-    public virtual TiposVehiculo TipoVehiculo { get; set; } = null!;
+    [System.Text.Json.Serialization.JsonIgnore] public virtual TiposVehiculo TipoVehiculo { get; set; } = null!;
 }

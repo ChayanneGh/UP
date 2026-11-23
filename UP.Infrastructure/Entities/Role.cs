@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace UP.Infrastructure.Entities;
@@ -9,5 +9,5 @@ public partial class Role
 
     public string Nombre { get; set; } = null!;
 
-    public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
+    [System.Text.Json.Serialization.JsonIgnore] public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
 }

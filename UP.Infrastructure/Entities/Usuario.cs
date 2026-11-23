@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace UP.Infrastructure.Entities;
@@ -21,13 +21,13 @@ public partial class Usuario
 
     public bool? EsActivo { get; set; }
 
-    public virtual ICollection<Entrada> Entrada { get; set; } = new List<Entrada>();
+    [System.Text.Json.Serialization.JsonIgnore] public virtual ICollection<Entrada> Entrada { get; set; } = new List<Entrada>();
 
-    public virtual ICollection<Reservacione> Reservaciones { get; set; } = new List<Reservacione>();
+    [System.Text.Json.Serialization.JsonIgnore] public virtual ICollection<Reservacione> Reservaciones { get; set; } = new List<Reservacione>();
 
-    public virtual Role? Rol { get; set; }
+    [System.Text.Json.Serialization.JsonIgnore] public virtual Role? Rol { get; set; }
 
-    public virtual ICollection<Transaccione> Transacciones { get; set; } = new List<Transaccione>();
+    [System.Text.Json.Serialization.JsonIgnore] public virtual ICollection<Transaccione> Transacciones { get; set; } = new List<Transaccione>();
 
-    public virtual ICollection<Vehiculo> Vehiculos { get; set; } = new List<Vehiculo>();
+    [System.Text.Json.Serialization.JsonIgnore] public virtual ICollection<Vehiculo> Vehiculos { get; set; } = new List<Vehiculo>();
 }

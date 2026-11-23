@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace UP.Infrastructure.Entities;
@@ -7,11 +7,11 @@ public partial class Reservacione
 {
     public int ReservacionId { get; set; }
 
-    public int EstacionamientoId { get; set; }
+    public int EspacioId { get; set; }
 
     public int UsuarioId { get; set; }
 
-    public virtual Estacionamiento Estacionamiento { get; set; } = null!;
+    [System.Text.Json.Serialization.JsonIgnore] public virtual Estacionamiento Espacio { get; set; } = null!;
 
-    public virtual Usuario Usuario { get; set; } = null!;
+    [System.Text.Json.Serialization.JsonIgnore] public virtual Usuario Usuario { get; set; } = null!;
 }

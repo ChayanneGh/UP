@@ -31,15 +31,17 @@
             listBox1 = new ListBox();
             label1 = new Label();
             groupBox1 = new GroupBox();
+            textBox2 = new TextBox();
+            textBox1 = new TextBox();
+            button1 = new Button();
             groupBox2 = new GroupBox();
             groupBox3 = new GroupBox();
-            groupBox4 = new GroupBox();
-            button1 = new Button();
-            listView1 = new ListView();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
             button2 = new Button();
+            textBox3 = new TextBox();
+            groupBox4 = new GroupBox();
+            button3 = new Button();
+            textBox4 = new TextBox();
+            listView1 = new ListView();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -51,7 +53,7 @@
             listBox1.FormattingEnabled = true;
             listBox1.Location = new Point(6, 28);
             listBox1.Name = "listBox1";
-            listBox1.Size = new Size(180, 129);
+            listBox1.Size = new Size(436, 154);
             listBox1.TabIndex = 0;
             // 
             // label1
@@ -77,13 +79,37 @@
             groupBox1.Text = "Registra entrada";
             groupBox1.Enter += groupBox1_Enter;
             // 
+            // textBox2
+            // 
+            textBox2.Location = new Point(54, 69);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(150, 31);
+            textBox2.TabIndex = 2;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(54, 106);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(150, 31);
+            textBox1.TabIndex = 1;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(70, 152);
+            button1.Name = "button1";
+            button1.Size = new Size(112, 34);
+            button1.TabIndex = 0;
+            button1.Text = "Registra";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // groupBox2
             // 
             groupBox2.Controls.Add(label1);
             groupBox2.Controls.Add(listBox1);
             groupBox2.Location = new Point(468, 241);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(320, 203);
+            groupBox2.Size = new Size(448, 203);
             groupBox2.TabIndex = 3;
             groupBox2.TabStop = false;
             groupBox2.Text = "groupBox2";
@@ -100,57 +126,6 @@
             groupBox3.Text = "Registra salida";
             groupBox3.Enter += groupBox3_Enter;
             // 
-            // groupBox4
-            // 
-            groupBox4.Controls.Add(listView1);
-            groupBox4.Location = new Point(468, 28);
-            groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(320, 207);
-            groupBox4.TabIndex = 5;
-            groupBox4.TabStop = false;
-            groupBox4.Text = "Cofirma Reserva";
-            groupBox4.Enter += groupBox4_Enter;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(70, 152);
-            button1.Name = "button1";
-            button1.Size = new Size(112, 34);
-            button1.TabIndex = 0;
-            button1.Text = "Registra";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
-            // listView1
-            // 
-            listView1.Location = new Point(7, 42);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(182, 146);
-            listView1.TabIndex = 0;
-            listView1.UseCompatibleStateImageBehavior = false;
-            listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
-            // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(54, 106);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(150, 31);
-            textBox1.TabIndex = 1;
-            // 
-            // textBox2
-            // 
-            textBox2.Location = new Point(54, 69);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(150, 31);
-            textBox2.TabIndex = 2;
-            // 
-            // textBox3
-            // 
-            textBox3.Location = new Point(16, 48);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(150, 31);
-            textBox3.TabIndex = 0;
-            // 
             // button2
             // 
             button2.Location = new Point(16, 96);
@@ -160,11 +135,57 @@
             button2.Text = "Registra";
             button2.UseVisualStyleBackColor = true;
             // 
+            // textBox3
+            // 
+            textBox3.Location = new Point(16, 48);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new Size(150, 31);
+            textBox3.TabIndex = 0;
+            // 
+            // groupBox4
+            // 
+            groupBox4.Controls.Add(button3);
+            groupBox4.Controls.Add(textBox4);
+            groupBox4.Controls.Add(listView1);
+            groupBox4.Location = new Point(468, 28);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Size = new Size(448, 207);
+            groupBox4.TabIndex = 5;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "Cofirma Reserva";
+            groupBox4.Enter += groupBox4_Enter;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(326, 80);
+            button3.Name = "button3";
+            button3.Size = new Size(110, 34);
+            button3.TabIndex = 2;
+            button3.Text = "Confirmar";
+            button3.UseVisualStyleBackColor = true;
+            // 
+            // textBox4
+            // 
+            textBox4.Location = new Point(326, 42);
+            textBox4.Name = "textBox4";
+            textBox4.PlaceholderText = "ID reserva";
+            textBox4.Size = new Size(110, 31);
+            textBox4.TabIndex = 1;
+            // 
+            // listView1
+            // 
+            listView1.Location = new Point(7, 42);
+            listView1.Name = "listView1";
+            listView1.Size = new Size(313, 146);
+            listView1.TabIndex = 0;
+            listView1.UseCompatibleStateImageBehavior = false;
+            listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
+            // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(938, 450);
             Controls.Add(groupBox4);
             Controls.Add(groupBox2);
             Controls.Add(groupBox3);
@@ -178,6 +199,7 @@
             groupBox3.ResumeLayout(false);
             groupBox3.PerformLayout();
             groupBox4.ResumeLayout(false);
+            groupBox4.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -195,5 +217,7 @@
         private TextBox textBox1;
         private Button button2;
         private TextBox textBox3;
+        private TextBox textBox4;
+        private Button button3;
     }
 }

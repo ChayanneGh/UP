@@ -49,7 +49,7 @@ jobs:
         run: |
           export PATH="$PATH:$HOME/.dotnet/tools"
           dotnet sonarscanner begin \
-            /o:"chayannegh" \
+            /o:"tesisenel" \
             /k:"TesisEnel_UASD_UP_2026_03" \
             /d:sonar.token="${SONAR_TOKEN}" \
             /d:sonar.host.url="https://sonarcloud.io"

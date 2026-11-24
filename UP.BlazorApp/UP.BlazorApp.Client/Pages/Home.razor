@@ -1,0 +1,264 @@
+﻿@page "/"
+
+<PageTitle>Gestión de parqueo</PageTitle>
+
+<h1 class="mb-2">Gestión de parqueo</h1>
+<p class="text-muted mb-4">Crea reservaciones, registra entradas y agrega vehículos desde una sola pantalla.</p>
+
+@if (!string.IsNullOrWhiteSpace(message))
+{
+    <div class="alert @(hasError ? "alert-danger" : "alert-success")" role="alert">@message</div>
+}
+
+@if (isLoading)
+{
+    <p><em>Cargando catálogos desde la API...</em></p>
+}
+else
+{
+    <div class="row g-4">
+        <div class="col-12 col-xl-4">
+            <section class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h2 class="h4 card-title">Nueva reservación</h2>
+                    <p class="card-text text-muted">Aparta un espacio para un usuario.</p>
+                    <EditForm Model="reservationForm" OnValidSubmit="CreateReservationAsync">
+                        <DataAnnotationsValidator />
+                        <div class="mb-3">
+                            <label class="form-label" for="reservation-user">Usuario</label>
+                            <InputSelect id="reservation-user" class="form-select" @bind-Value="reservationForm.UsuarioId">
+                                <option value="0">Selecciona un usuario</option>
+                                @foreach (var user in users)
+                                {
+                                    <option value="@user.UsuarioId">@user.Nombre</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="reservation-space">Espacio</label>
+                            <InputSelect id="reservation-space" class="form-select" @bind-Value="reservationForm.EstacionamientoId">
+                                <option value="0">Selecciona un espacio</option>
+                                @foreach (var space in parkingSpaces)
+                                {
+                                    <option value="@space.EstacionamientoId">Espacio @space.EstacionamientoId (nivel @space.NivelId)</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <button class="btn btn-primary" type="submit" disabled="@isSaving">Reservar espacio</button>
+                    </EditForm>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-12 col-xl-4">
+            <section class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h2 class="h4 card-title">Registrar entrada</h2>
+                    <p class="card-text text-muted">Registra el ingreso de un vehículo al parqueo.</p>
+                    <EditForm Model="entryForm" OnValidSubmit="CreateEntryAsync">
+                        <DataAnnotationsValidator />
+                        <div class="mb-3">
+                            <label class="form-label" for="entry-plate">Placa</label>
+                            <InputText id="entry-plate" class="form-control" @bind-Value="entryForm.Placa" placeholder="Ej. A123456" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="entry-user">Usuario</label>
+                            <InputSelect id="entry-user" class="form-select" @bind-Value="entryForm.UsuarioId">
+                                <option value="0">Selecciona un usuario</option>
+                                @foreach (var user in users)
+                                {
+                                    <option value="@user.UsuarioId">@user.Nombre</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="entry-space">Espacio</label>
+                            <InputSelect id="entry-space" class="form-select" @bind-Value="entryForm.EstacionamientoId">
+                                <option value="0">Selecciona un espacio</option>
+                                @foreach (var space in parkingSpaces)
+                                {
+                                    <option value="@space.EstacionamientoId">Espacio @space.EstacionamientoId (nivel @space.NivelId)</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <button class="btn btn-success" type="submit" disabled="@isSaving">Registrar entrada</button>
+                    </EditForm>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-12 col-xl-4">
+            <section class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h2 class="h4 card-title">Registrar vehículo</h2>
+                    <p class="card-text text-muted">Asocia una placa con su propietario y tipo.</p>
+                    <EditForm Model="vehicleForm" OnValidSubmit="CreateVehicleAsync">
+                        <DataAnnotationsValidator />
+                        <div class="mb-3">
+                            <label class="form-label" for="vehicle-plate">Placa</label>
+                            <InputText id="vehicle-plate" class="form-control" @bind-Value="vehicleForm.Placa" placeholder="Ej. A123456" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="vehicle-owner">Propietario</label>
+                            <InputSelect id="vehicle-owner" class="form-select" @bind-Value="vehicleForm.PropietarioId">
+                                <option value="0">Selecciona un propietario</option>
+                                @foreach (var user in users)
+                                {
+                                    <option value="@user.UsuarioId">@user.Nombre</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="vehicle-type">Tipo de vehículo</label>
+                            <InputSelect id="vehicle-type" class="form-select" @bind-Value="vehicleForm.TipoVehiculoId">
+                                <option value="0">Selecciona un tipo</option>
+                                @foreach (var type in vehicleTypes)
+                                {
+                                    <option value="@type.TipoVehiculoId">@type.Nombre</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <button class="btn btn-dark" type="submit" disabled="@isSaving">Registrar vehículo</button>
+                    </EditForm>
+                </div>
+            </section>
+        </div>
+    </div>
+}
+
+@code {
+    private readonly List<UserOption> users = [];
+    private readonly List<ParkingOption> parkingSpaces = [];
+    private readonly List<VehicleTypeOption> vehicleTypes = [];
+    private readonly ReservationForm reservationForm = new();
+    private readonly EntryForm entryForm = new();
+    private readonly VehicleForm vehicleForm = new();
+    private bool isLoading = true;
+    private bool isSaving;
+    private bool hasError;
+    private string? message;
+
+    [Inject]
+    private HttpClient Http { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var userTask = Http.GetFromJsonAsync<List<UserOption>>("api/Usuario");
+            var parkingTask = Http.GetFromJsonAsync<List<ParkingOption>>("api/Estacionamiento");
+            var vehicleTypeTask = Http.GetFromJsonAsync<List<VehicleTypeOption>>("api/TiposVehiculo");
+            await Task.WhenAll(userTask, parkingTask, vehicleTypeTask);
+
+            users.AddRange(userTask.Result ?? []);
+            parkingSpaces.AddRange(parkingTask.Result ?? []);
+            vehicleTypes.AddRange(vehicleTypeTask.Result ?? []);
+        }
+        catch (HttpRequestException)
+        {
+            ShowMessage("No se pudo conectar con la API. Verifica que UP.Api esté ejecutándose y que ApiBaseUrl sea correcto.", true);
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task CreateReservationAsync()
+    {
+        await PostAsync("api/Reservacione", reservationForm, "La reservación fue creada correctamente.");
+        reservationForm.Reset();
+    }
+
+    private async Task CreateEntryAsync()
+    {
+        var request = new
+        {
+            entryForm.HoraEntrada,
+            entryForm.EstacionamientoId,
+            entryForm.UsuarioId,
+            entryForm.Placa,
+            entryForm.Estado
+        };
+
+        await PostAsync("api/Entrada", request, "La entrada fue registrada correctamente.");
+        entryForm.Reset();
+    }
+
+    private async Task CreateVehicleAsync()
+    {
+        await PostAsync("api/Vehiculo", vehicleForm, "El vehículo fue registrado correctamente.");
+        vehicleForm.Reset();
+    }
+
+    private async Task PostAsync<T>(string endpoint, T body, string successMessage)
+    {
+        isSaving = true;
+        message = null;
+
+        try
+        {
+            using var response = await Http.PostAsJsonAsync(endpoint, body);
+            if (!response.IsSuccessStatusCode)
+            {
+                ShowMessage($"La API rechazó la operación ({(int)response.StatusCode}). Revisa los datos seleccionados.", true);
+                return;
+            }
+
+            ShowMessage(successMessage, false);
+        }
+        catch (HttpRequestException)
+        {
+            ShowMessage("No se pudo completar la operación porque la API no está disponible.", true);
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private void ShowMessage(string text, bool error)
+    {
+        message = text;
+        hasError = error;
+    }
+
+    private sealed class ReservationForm
+    {
+        public int EstacionamientoId { get; set; }
+        public int UsuarioId { get; set; }
+
+        public void Reset() => (EstacionamientoId, UsuarioId) = (0, 0);
+    }
+
+    private sealed class EntryForm
+    {
+        public DateTime HoraEntrada { get; set; } = DateTime.Now;
+        public int EstacionamientoId { get; set; }
+        public int UsuarioId { get; set; }
+        public string Placa { get; set; } = string.Empty;
+        public bool Estado { get; set; } = true;
+
+        public void Reset()
+        {
+            HoraEntrada = DateTime.Now;
+            EstacionamientoId = 0;
+            UsuarioId = 0;
+            Placa = string.Empty;
+            Estado = true;
+        }
+    }
+
+    private sealed class VehicleForm
+    {
+        public int PropietarioId { get; set; }
+        public string Placa { get; set; } = string.Empty;
+        public int TipoVehiculoId { get; set; }
+
+        public void Reset() => (PropietarioId, Placa, TipoVehiculoId) = (0, string.Empty, 0);
+    }
+
+    private sealed record UserOption(int UsuarioId, string Nombre);
+    private sealed record ParkingOption(int EstacionamientoId, int NivelId);
+    private sealed record VehicleTypeOption(int TipoVehiculoId, string Nombre);
+}

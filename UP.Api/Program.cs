@@ -8,6 +8,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("BlazorClient", policy =>
+    {
+        policy.WithOrigins("https://localhost:7269", "http://localhost:5089")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 builder.Services.AddDbContextFactory<P4rquingContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection")));
 
@@ -32,6 +41,7 @@ app.MapOpenApi();
 app.MapScalarApiReference();
 
 app.UseHttpsRedirection();
+app.UseCors("BlazorClient");
 
 app.UseAuthorization();
 

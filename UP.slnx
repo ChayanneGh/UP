@@ -1,4 +1,4 @@
-﻿<Solution>
+<Solution>
   <Folder Name="/Solution Items/">
     <File Path="README.md" />
   </Folder>
@@ -8,4 +8,5 @@
     <Project Path="UP.Infrastructure/UP.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/Tests/" />
+  <Project Path="UP.WinFormsApp/UP.WinFormsApp.csproj" />
 </Solution>

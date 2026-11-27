@@ -3,11 +3,11 @@
     <File Path="README.md" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="Application.UniteTest/Application.UnitTests.csproj" />
     <Project Path="UP.Api/UP.Api.csproj" />
     <Project Path="UP.Application/UP.Application.csproj" />
     <Project Path="UP.Infrastructure/UP.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/Tests/" />
-  <Project Path="Application.UniteTest/Application.UnitTests.csproj" />
   <Project Path="UP.WinFormsApp/UP.WinFormsApp.csproj" />
 </Solution>

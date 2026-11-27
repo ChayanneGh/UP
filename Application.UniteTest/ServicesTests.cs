@@ -1,25 +1,25 @@
 using Microsoft.EntityFrameworkCore;
-using UP.Application.Service;
+using UP.Application.Services;
 using UP.Infrastructure.Context;
 using UP.Infrastructure.Entities;
 using Xunit;
 
 namespace Application.UnitTests;
 
-public sealed class TestDbContextFactory : IDbContextFactory<P4rquingContext>
+public sealed class TestDbContextFactory : IDbContextFactory<UPContext>
 {
-    private readonly DbContextOptions<P4rquingContext> options;
+    private readonly DbContextOptions<UPContext> options;
 
     public TestDbContextFactory()
     {
-        options = new DbContextOptionsBuilder<P4rquingContext>()
+        options = new DbContextOptionsBuilder<UPContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
     }
 
-    public P4rquingContext CreateDbContext() => new(options);
+    public UPContext CreateDbContext() => new(options);
 
-    public Task<P4rquingContext> CreateDbContextAsync(CancellationToken cancellationToken = default)
+    public Task<UPContext> CreateDbContextAsync(CancellationToken cancellationToken = default)
         => Task.FromResult(CreateDbContext());
 }
 
@@ -38,7 +38,7 @@ public class ServicesTests
     {
         var factory = new TestDbContextFactory();
         var service = new EntradaSrv(factory);
-        var entity = new Entrada { EntradaId = NewId(), EstacionamientoId = NewId(), UsuarioId = NewId(), Placa = NewPlate("P") };
+        var entity = new Entrada { EntradaId = NewId(), EspacioId = NewId(), UsuarioId = NewId(), Placa = NewPlate("P") };
 
         Assert.True(await service.Create(entity));
         Assert.NotNull(await service.ReadOne(entity.EntradaId));
@@ -105,7 +105,7 @@ public class ServicesTests
     {
         var factory = new TestDbContextFactory();
         var service = new ReservacioneSrv(factory);
-        var entity = new Reservacione { ReservacionId = NewId(), EstacionamientoId = NewId(), UsuarioId = NewId() };
+        var entity = new Reservacione { ReservacionId = NewId(), EspacioId = NewId(), UsuarioId = NewId() };
 
         Assert.True(await service.Create(entity));
         Assert.NotNull(await service.ReadOne(entity.ReservacionId));

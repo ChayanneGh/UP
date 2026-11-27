@@ -8,5 +8,6 @@
     <Project Path="UP.Infrastructure/UP.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/Tests/" />
+  <Project Path="Application.UniteTest/Application.UnitTests.csproj" />
   <Project Path="UP.WinFormsApp/UP.WinFormsApp.csproj" />
 </Solution>

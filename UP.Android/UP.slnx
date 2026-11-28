@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/Monorepo/">
+    <File Path="Monorepo.json" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="UP.Api/UP.Api.csproj" />
+    <Project Path="UP.Application/UP.Application.csproj" />
+    <Project Path="UP.BlazorApp/UP.BlazorApp.Client/UP.BlazorApp.Client.csproj" Id="9a64d410-f28e-4569-9312-4625c5dd8260" />
+    <Project Path="UP.BlazorApp/UP.BlazorApp/UP.BlazorApp.csproj" Id="2badea98-ac18-4822-b8c7-ae0922f2d258" />
+    <Project Path="UP.Infrastructure/UP.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Application.UniteTest/Application.UnitTests.csproj" Id="98623d86-8828-4306-8e31-b195b09fcfed" />
+  </Folder>
+</Solution>

@@ -12,6 +12,15 @@
     <Project Path="UP.BlazorApp/UP.BlazorApp/UP.BlazorApp.csproj" Id="2badea98-ac18-4822-b8c7-ae0922f2d258" />
     <Project Path="UP.Infrastructure/UP.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/src/UP.Android/">
+    <File Path="UP.Android/build.gradle.kts" />
+    <File Path="UP.Android/gradle.properties" />
+    <File Path="UP.Android/gradlew" />
+    <File Path="UP.Android/gradlew.bat" />
+    <File Path="UP.Android/local.properties" />
+    <File Path="UP.Android/settings.gradle.kts" />
+    <File Path="UP.Android/UP.slnx" />
+  </Folder>
   <Folder Name="/Tests/">
     <Project Path="Application.UniteTest/Application.UnitTests.csproj" Id="98623d86-8828-4306-8e31-b195b09fcfed" />
   </Folder>

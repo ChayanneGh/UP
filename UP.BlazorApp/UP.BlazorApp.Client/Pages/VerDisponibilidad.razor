@@ -1,0 +1,289 @@
+﻿@page "/ver-disponibilidad"
+@rendermode InteractiveWebAssembly
+
+<PageTitle>Ver Disponibilidad</PageTitle>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1 text-primary"><i class="bi bi-grid-3x3-gap-fill me-2"></i>Control de Disponibilidad</h2>
+            <p class="text-muted mb-0">Vista conceptual interactiva del estado de los espacios de estacionamiento por nivel.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-outline-primary" @onclick="SimularEntradaSalida">
+                <i class="bi bi-shuffle me-1"></i> Simular Movimiento
+            </button>
+            <button class="btn btn-primary" @onclick="LiberarTodos">
+                <i class="bi bi-arrow-counterclockwise me-1"></i> Reiniciar
+            </button>
+        </div>
+    </div>
+
+    <!-- Tarjetas de Resumen General -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-primary text-white">
+                <div class="card-body">
+                    <h6 class="card-subtitle text-white-50">Capacidad Total</h6>
+                    <h2 class="card-title fw-bold my-2">@TotalEspacios</h2>
+                    <small>Espacios registrados</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-success text-white">
+                <div class="card-body">
+                    <h6 class="card-subtitle text-white-50">Disponibles</h6>
+                    <h2 class="card-title fw-bold my-2">@TotalDisponibles</h2>
+                    <small>@(((double)TotalDisponibles / TotalEspacios * 100).ToString("F1"))% libre</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-danger text-white">
+                <div class="card-body">
+                    <h6 class="card-subtitle text-white-50">Ocupados</h6>
+                    <h2 class="card-title fw-bold my-2">@TotalOcupados</h2>
+                    <small>@(((double)TotalOcupados / TotalEspacios * 100).ToString("F1"))% en uso</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-warning text-dark">
+                <div class="card-body">
+                    <h6 class="card-subtitle text-muted">Reservados</h6>
+                    <h2 class="card-title fw-bold my-2">@TotalReservados</h2>
+                    <small>En espera de ingreso</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros y Leyenda -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <div class="d-flex align-items-center gap-2">
+                <span class="fw-semibold">Filtrar por Nivel:</span>
+                <select class="form-select form-select-sm w-auto" @bind="nivelSeleccionado">
+                    <option value="0">Todos los niveles</option>
+                    @foreach (var nivel in niveles)
+                    {
+                        <option value="@nivel.Id">@nivel.Nombre</option>
+                    }
+                </select>
+            </div>
+            
+            <div class="d-flex flex-wrap gap-3 align-items-center small">
+                <span class="badge bg-success px-3 py-2 text-white">
+                    <i class="bi bi-check-circle me-1"></i> Libre (Haz clic para alternar)
+                </span>
+                <span class="badge bg-danger px-3 py-2 text-white">
+                    <i class="bi bi-x-circle me-1"></i> Ocupado
+                </span>
+                <span class="badge bg-warning text-dark px-3 py-2">
+                    <i class="bi bi-clock me-1"></i> Reservado
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cuadrícula / Mapa Conceptual de Espacios -->
+    @foreach (var nivel in NivelesFiltrados)
+    {
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold text-dark">
+                    <i class="bi bi-layers text-secondary me-2"></i>@nivel.Nombre
+                </h5>
+                <div>
+                    <span class="badge bg-light text-dark border me-1">Total: @nivel.Espacios.Count</span>
+                    <span class="badge bg-success-subtle text-success border border-success me-1">Libres: @nivel.Espacios.Count(e => e.Estado == EstadoEspacio.Disponible)</span>
+                    <span class="badge bg-danger-subtle text-danger border border-danger">Ocupados: @nivel.Espacios.Count(e => e.Estado == EstadoEspacio.Ocupado)</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3">
+                    @foreach (var espacio in nivel.Espacios)
+                    {
+                        <div class="col">
+                            <div class="card h-100 text-center border-2 cursor-pointer shadow-sm @GetCardStyle(espacio.Estado)"
+                                 style="cursor: pointer; transition: transform 0.15s ease-in-out;"
+                                 @onclick="() => AlternarEstado(espacio)">
+                                <div class="card-body p-3">
+                                    <div class="fs-1 mb-1">
+                                        <i class="@GetIconStyle(espacio.Estado)"></i>
+                                    </div>
+                                    <h6 class="fw-bold mb-1">@espacio.Codigo</h6>
+                                    <span class="badge @GetBadgeStyle(espacio.Estado)">
+                                        @espacio.Estado.ToString()
+                                    </span>
+                                    @if (!string.IsNullOrEmpty(espacio.PlacaVehiculo))
+                                    {
+                                        <div class="text-muted small mt-1">
+                                            <i class="bi bi-car-front"></i> @espacio.PlacaVehiculo
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private int nivelSeleccionado = 0;
+
+    public enum EstadoEspacio
+    {
+        Disponible,
+        Ocupado,
+        Reservado
+    }
+
+    public class EspacioModel
+    {
+        public int Id { get; set; }
+        public string Codigo { get; set; } = string.Empty;
+        public EstadoEspacio Estado { get; set; }
+        public string? PlacaVehiculo { get; set; }
+    }
+
+    public class NivelModel
+    {
+        public int Id { get; set; }
+        public string Nombre { get; set; } = string.Empty;
+        public List<EspacioModel> Espacios { get; set; } = new();
+    }
+
+    private List<NivelModel> niveles = new();
+
+    private IEnumerable<NivelModel> NivelesFiltrados =>
+        nivelSeleccionado == 0 ? niveles : niveles.Where(n => n.Id == nivelSeleccionado);
+
+    private int TotalEspacios => niveles.Sum(n => n.Espacios.Count);
+    private int TotalDisponibles => niveles.Sum(n => n.Espacios.Count(e => e.Estado == EstadoEspacio.Disponible));
+    private int TotalOcupados => niveles.Sum(n => n.Espacios.Count(e => e.Estado == EstadoEspacio.Ocupado));
+    private int TotalReservados => niveles.Sum(n => n.Espacios.Count(e => e.Estado == EstadoEspacio.Reservado));
+
+    protected override void OnInitialized()
+    {
+        InicializarDatosConceptuales();
+    }
+
+    private void InicializarDatosConceptuales()
+    {
+        niveles = new List<NivelModel>
+        {
+            new NivelModel
+            {
+                Id = 1,
+                Nombre = "Nivel 1 - Planta Baja",
+                Espacios = new List<EspacioModel>
+                {
+                    new EspacioModel { Id = 101, Codigo = "A-01", Estado = EstadoEspacio.Disponible },
+                    new EspacioModel { Id = 102, Codigo = "A-02", Estado = EstadoEspacio.Ocupado, PlacaVehiculo = "ABC-123" },
+                    new EspacioModel { Id = 103, Codigo = "A-03", Estado = EstadoEspacio.Disponible },
+                    new EspacioModel { Id = 104, Codigo = "A-04", Estado = EstadoEspacio.Reservado },
+                    new EspacioModel { Id = 105, Codigo = "A-05", Estado = EstadoEspacio.Ocupado, PlacaVehiculo = "XYZ-789" },
+                    new EspacioModel { Id = 106, Codigo = "A-06", Estado = EstadoEspacio.Disponible }
+                }
+            },
+            new NivelModel
+            {
+                Id = 2,
+                Nombre = "Nivel 2 - Subterráneo 1",
+                Espacios = new List<EspacioModel>
+                {
+                    new EspacioModel { Id = 201, Codigo = "B-01", Estado = EstadoEspacio.Disponible },
+                    new EspacioModel { Id = 202, Codigo = "B-02", Estado = EstadoEspacio.Disponible },
+                    new EspacioModel { Id = 203, Codigo = "B-03", Estado = EstadoEspacio.Ocupado, PlacaVehiculo = "MNO-456" },
+                    new EspacioModel { Id = 204, Codigo = "B-04", Estado = EstadoEspacio.Disponible },
+                    new EspacioModel { Id = 205, Codigo = "B-05", Estado = EstadoEspacio.Reservado },
+                    new EspacioModel { Id = 206, Codigo = "B-06", Estado = EstadoEspacio.Disponible }
+                }
+            },
+            new NivelModel
+            {
+                Id = 3,
+                Nombre = "Nivel 3 - Terraza",
+                Espacios = new List<EspacioModel>
+                {
+                    new EspacioModel { Id = 301, Codigo = "C-01", Estado = EstadoEspacio.Disponible },
+                    new EspacioModel { Id = 302, Codigo = "C-02", Estado = EstadoEspacio.Disponible },
+                    new EspacioModel { Id = 303, Codigo = "C-03", Estado = EstadoEspacio.Disponible },
+                    new EspacioModel { Id = 304, Codigo = "C-04", Estado = EstadoEspacio.Ocupado, PlacaVehiculo = "DEF-321" },
+                    new EspacioModel { Id = 305, Codigo = "C-05", Estado = EstadoEspacio.Disponible },
+                    new EspacioModel { Id = 306, Codigo = "C-06", Estado = EstadoEspacio.Disponible }
+                }
+            }
+        };
+    }
+
+    private void AlternarEstado(EspacioModel espacio)
+    {
+        espacio.Estado = espacio.Estado switch
+        {
+            EstadoEspacio.Disponible => EstadoEspacio.Ocupado,
+            EstadoEspacio.Ocupado => EstadoEspacio.Reservado,
+            EstadoEspacio.Reservado => EstadoEspacio.Disponible,
+            _ => EstadoEspacio.Disponible
+        };
+
+        if (espacio.Estado == EstadoEspacio.Ocupado && string.IsNullOrEmpty(espacio.PlacaVehiculo))
+        {
+            espacio.PlacaVehiculo = "AUTO-" + Random.Shared.Next(100, 999);
+        }
+        else if (espacio.Estado != EstadoEspacio.Ocupado)
+        {
+            espacio.PlacaVehiculo = null;
+        }
+    }
+
+    private void SimularEntradaSalida()
+    {
+        var todos = niveles.SelectMany(n => n.Espacios).ToList();
+        if (todos.Count == 0) return;
+
+        var aleatorio = todos[Random.Shared.Next(todos.Count)];
+        AlternarEstado(aleatorio);
+    }
+
+    private void LiberarTodos()
+    {
+        foreach (var nivel in niveles)
+        {
+            foreach (var espacio in nivel.Espacios)
+            {
+                espacio.Estado = EstadoEspacio.Disponible;
+                espacio.PlacaVehiculo = null;
+            }
+        }
+    }
+
+    private string GetCardStyle(EstadoEspacio estado) => estado switch
+    {
+        EstadoEspacio.Disponible => "border-success bg-light",
+        EstadoEspacio.Ocupado => "border-danger bg-danger-subtle",
+        EstadoEspacio.Reservado => "border-warning bg-warning-subtle",
+        _ => "border-secondary"
+    };
+
+    private string GetBadgeStyle(EstadoEspacio estado) => estado switch
+    {
+        EstadoEspacio.Disponible => "bg-success text-white",
+        EstadoEspacio.Ocupado => "bg-danger text-white",
+        EstadoEspacio.Reservado => "bg-warning text-dark",
+        _ => "bg-secondary"
+    };
+
+    private string GetIconStyle(EstadoEspacio estado) => estado switch
+    {
+        EstadoEspacio.Disponible => "bi bi-check-circle-fill text-success",
+        EstadoEspacio.Ocupado => "bi bi-car-front-fill text-danger",
+        EstadoEspacio.Reservado => "bi bi-clock-fill text-warning",
+        _ => "bi bi-question-circle text-muted"
+    };
+}

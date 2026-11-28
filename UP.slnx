@@ -8,5 +8,7 @@
     <Project Path="UP.Infrastructure/UP.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/Tests/" />
+  <Project Path="UP.BlazorApp/UP.BlazorApp.Client/UP.BlazorApp.Client.csproj" />
+  <Project Path="UP.BlazorApp/UP.BlazorApp/UP.BlazorApp.csproj" />
   <Project Path="UP.WinFormsApp/UP.WinFormsApp.csproj" />
 </Solution>
